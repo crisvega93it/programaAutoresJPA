@@ -17,9 +17,9 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 public class LibroJpaController implements Serializable {
-    
+
     private EntityManagerFactory emf = null;
-    
+
     public LibroJpaController() {
         this.emf = Persistence.createEntityManagerFactory("miUnidad");
     }
@@ -52,11 +52,10 @@ public class LibroJpaController implements Serializable {
                 autor = em.merge(autor);
             }
             em.getTransaction().commit();
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             respuesta = false;
-        } 
-        finally {
+        } finally {
             if (em != null) {
                 em.close();
             }
@@ -64,66 +63,28 @@ public class LibroJpaController implements Serializable {
         return respuesta;
     }
 
-    public void edit(Libro libro) throws NonexistentEntityException, Exception {
+    public Boolean edit(Libro libro) {
         EntityManager em = null;
+        Boolean respuesta = true;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
             Libro persistentLibro = em.find(Libro.class, libro.getIdLibros());
-            Autor autorOld = persistentLibro.getAutor();
-            Autor autorNew = libro.getAutor();
-            Collection<Categoria> categoriaCollectionOld = persistentLibro.getCategoriaCollection();
-            Collection<Categoria> categoriaCollectionNew = libro.getCategoriaCollection();
-            if (autorNew != null) {
-                autorNew = em.getReference(autorNew.getClass(), autorNew.getIdAutor());
-                libro.setAutor(autorNew);
-            }
-            Collection<Categoria> attachedCategoriaCollectionNew = new ArrayList<Categoria>();
-            for (Categoria categoriaCollectionNewCategoriaToAttach : categoriaCollectionNew) {
-                categoriaCollectionNewCategoriaToAttach = em.getReference(categoriaCollectionNewCategoriaToAttach.getClass(), categoriaCollectionNewCategoriaToAttach.getIdCategoria());
-                attachedCategoriaCollectionNew.add(categoriaCollectionNewCategoriaToAttach);
-            }
-            categoriaCollectionNew = attachedCategoriaCollectionNew;
-            libro.setCategoriaCollection(categoriaCollectionNew);
-            libro = em.merge(libro);
-            if (autorOld != null && !autorOld.equals(autorNew)) {
-                autorOld.getListaLibros().remove(libro);
-                autorOld = em.merge(autorOld);
-            }
-            if (autorNew != null && !autorNew.equals(autorOld)) {
-                autorNew.getListaLibros().add(libro);
-                autorNew = em.merge(autorNew);
-            }
-            for (Categoria categoriaCollectionOldCategoria : categoriaCollectionOld) {
-                if (!categoriaCollectionNew.contains(categoriaCollectionOldCategoria)) {
-                    categoriaCollectionOldCategoria.getLibroCollection().remove(libro);
-                    categoriaCollectionOldCategoria = em.merge(categoriaCollectionOldCategoria);
-                }
-            }
-            for (Categoria categoriaCollectionNewCategoria : categoriaCollectionNew) {
-                if (!categoriaCollectionOld.contains(categoriaCollectionNewCategoria)) {
-                    categoriaCollectionNewCategoria.getLibroCollection().add(libro);
-                    categoriaCollectionNewCategoria = em.merge(categoriaCollectionNewCategoria);
-                }
-            }
+            persistentLibro.setTitulo(libro.getTitulo());
+            persistentLibro = em.merge(persistentLibro);
             em.getTransaction().commit();
         } catch (Exception ex) {
-            String msg = ex.getLocalizedMessage();
-            if (msg == null || msg.length() == 0) {
-                Integer id = libro.getIdLibros();
-                if (findLibro(id) == null) {
-                    throw new NonexistentEntityException("The libro with id " + id + " no longer exists.");
-                }
-            }
-            throw ex;
+            ex.printStackTrace();
+            respuesta = false;
         } finally {
             if (em != null) {
                 em.close();
             }
         }
+        return true;
     }
 
-    public Boolean destroy(Integer id){
+    public Boolean destroy(Integer id) {
         EntityManager em = null;
         Boolean respuesta = true;
         Libro libro = null;
@@ -149,11 +110,10 @@ public class LibroJpaController implements Serializable {
             }
             em.remove(libro);
             em.getTransaction().commit();
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             respuesta = false;
-        }
-            finally {
+        } finally {
             if (em != null) {
                 em.close();
             }
@@ -206,5 +166,5 @@ public class LibroJpaController implements Serializable {
             em.close();
         }
     }
-    
+
 }

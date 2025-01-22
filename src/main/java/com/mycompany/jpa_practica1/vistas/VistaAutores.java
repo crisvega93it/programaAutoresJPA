@@ -447,6 +447,9 @@ public class VistaAutores extends javax.swing.JFrame {
 
     private void rellenarTablePorNombre(String nom) {
         dtm.setRowCount(0);
+        if(controladorBusquedas == null){
+            controladorBusquedas = new ControladorBusquedas(emf);
+        }
         List<Autor> autores = controladorBusquedas.buscarPorNombre(nom);
         Collections.sort(autores);
 
