@@ -98,7 +98,7 @@ public class Autor implements Serializable, Comparable<Autor> {
 
     @Override
     public String toString() {
-        return "com.mycompany.jpa_practica1.modelos.Autor[ idAutor=" + idAutor + ", " + this.nomAutor + " ]";
+        return "idAutor: " + idAutor + ", " + this.nomAutor;
     }
 
     @Override

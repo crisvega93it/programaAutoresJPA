@@ -16,10 +16,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-/**
- *
- * @author crveg
- */
 public class LibroJpaController implements Serializable {
     
     private EntityManagerFactory emf = null;
@@ -36,7 +32,8 @@ public class LibroJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Libro libro) {
+    public Boolean create(Libro libro) {
+        Boolean respuesta = true;
         if (libro.getCategoriaCollection() == null) {
             libro.setCategoriaCollection(new ArrayList<Categoria>());
         }
@@ -49,27 +46,22 @@ public class LibroJpaController implements Serializable {
                 autor = em.getReference(autor.getClass(), autor.getIdAutor());
                 libro.setAutor(autor);
             }
-            Collection<Categoria> attachedCategoriaCollection = new ArrayList<Categoria>();
-            for (Categoria categoriaCollectionCategoriaToAttach : libro.getCategoriaCollection()) {
-                categoriaCollectionCategoriaToAttach = em.getReference(categoriaCollectionCategoriaToAttach.getClass(), categoriaCollectionCategoriaToAttach.getIdCategoria());
-                attachedCategoriaCollection.add(categoriaCollectionCategoriaToAttach);
-            }
-            libro.setCategoriaCollection(attachedCategoriaCollection);
             em.persist(libro);
             if (autor != null) {
                 autor.getListaLibros().add(libro);
                 autor = em.merge(autor);
             }
-            for (Categoria categoriaCollectionCategoria : libro.getCategoriaCollection()) {
-                categoriaCollectionCategoria.getLibroCollection().add(libro);
-                categoriaCollectionCategoria = em.merge(categoriaCollectionCategoria);
-            }
             em.getTransaction().commit();
-        } finally {
+        }catch(Exception e){
+            e.printStackTrace();
+            respuesta = false;
+        } 
+        finally {
             if (em != null) {
                 em.close();
             }
         }
+        return respuesta;
     }
 
     public void edit(Libro libro) throws NonexistentEntityException, Exception {
@@ -131,17 +123,19 @@ public class LibroJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws NonexistentEntityException {
+    public Boolean destroy(Integer id){
         EntityManager em = null;
+        Boolean respuesta = true;
+        Libro libro = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Libro libro;
             try {
                 libro = em.getReference(Libro.class, id);
                 libro.getIdLibros();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The libro with id " + id + " no longer exists.", enfe);
+                enfe.printStackTrace();
+                respuesta = false;
             }
             Autor autor = libro.getAutor();
             if (autor != null) {
@@ -155,11 +149,16 @@ public class LibroJpaController implements Serializable {
             }
             em.remove(libro);
             em.getTransaction().commit();
-        } finally {
+        }catch(Exception e){
+            e.printStackTrace();
+            respuesta = false;
+        }
+            finally {
             if (em != null) {
                 em.close();
             }
         }
+        return respuesta;
     }
 
     public List<Libro> findLibroEntities() {

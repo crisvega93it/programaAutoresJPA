@@ -49,8 +49,8 @@ public class DialogAltaAutor extends javax.swing.JDialog {
         jLabel5 = new javax.swing.JLabel();
         tf_nomLibro = new javax.swing.JTextField();
         tf_precio = new javax.swing.JTextField();
-        tf_fecha = new javax.swing.JTextField();
         jb_addLibro = new javax.swing.JButton();
+        tf_fecha = new com.toedter.calendar.JDateChooser();
         jb_modificar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -90,12 +90,6 @@ public class DialogAltaAutor extends javax.swing.JDialog {
             }
         });
 
-        tf_fecha.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tf_fechaActionPerformed(evt);
-            }
-        });
-
         jb_addLibro.setText("Añadir Libro");
         jb_addLibro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -116,17 +110,17 @@ public class DialogAltaAutor extends javax.swing.JDialog {
                         .addGap(26, 26, 26)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(tf_precio, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
-                                .addComponent(tf_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(tf_nomLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(tf_nomLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(tf_precio, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                                    .addComponent(tf_fecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
                 .addGap(15, 15, 15))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(126, 126, 126)
@@ -147,11 +141,14 @@ public class DialogAltaAutor extends javax.swing.JDialog {
                     .addComponent(jLabel4)
                     .addComponent(tf_precio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(tf_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
-                .addComponent(jb_addLibro))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                        .addComponent(jb_addLibro))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(tf_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
 
         jb_modificar.setText("Añadir Autor");
@@ -203,21 +200,17 @@ public class DialogAltaAutor extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_tf_nomLibroActionPerformed
 
-    private void tf_fechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_fechaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tf_fechaActionPerformed
-
     private void jb_addLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_addLibroActionPerformed
 
         try {
             String nomLibro = tf_nomLibro.getText();
             Double precio = Double.valueOf(tf_precio.getText());
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(sdf.parse(tf_fecha.getText()));
+            Calendar cal = tf_fecha.getCalendar();
+            String fecha = sdf.format(cal.getTime());
             Libro libro = new Libro(nomLibro, cal, precio);
             listaLibros.add(libro);
-            dtm.addRow(new Object[]{libro.getTitulo(), libro.getPrecio(), tf_fecha.getText()});
+            dtm.addRow(new Object[]{libro.getTitulo(), libro.getPrecio(), fecha});
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "ERROR AL RELLENAR CAMPOS");
             ex.printStackTrace();
@@ -256,7 +249,7 @@ public class DialogAltaAutor extends javax.swing.JDialog {
     private javax.swing.JButton jb_addLibro;
     private javax.swing.JButton jb_modificar;
     private javax.swing.JTable jtable_librosAñadidos;
-    private javax.swing.JTextField tf_fecha;
+    private com.toedter.calendar.JDateChooser tf_fecha;
     private javax.swing.JTextField tf_nomAutor;
     private javax.swing.JTextField tf_nomLibro;
     private javax.swing.JTextField tf_precio;
