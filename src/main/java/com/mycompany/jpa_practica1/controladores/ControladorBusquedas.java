@@ -44,21 +44,44 @@ public class ControladorBusquedas {
     public List buscarPorNombre(String autor) {
         em = emf.createEntityManager();
 
-        TypedQuery<Autor> query = em.createNamedQuery("Autor.findByNomAutor", Autor.class);
-        query.setParameter("nomAutor", "%" + autor + "%");
+        TypedQuery<Libro> query = em.createNamedQuery("Libro.findNomAutor", Libro.class);
+        query.setParameter("nomAutor", autor);
 
-        List<Autor> autores = query.getResultList();
+        List<Libro> libros = query.getResultList();
 
         em.close();
 
-        return autores;
+        return libros;
     }
 
+    public List allLibros() {
+        em = emf.createEntityManager();
+
+        TypedQuery<Libro> query = em.createNamedQuery("Libro.findAll", Libro.class);
+        List<Libro> libros = query.getResultList();
+
+        em.close();
+
+        return libros;
+    }
+    
     public List librosByAutor(int idAutor) {
         em = emf.createEntityManager();
 
         TypedQuery<Libro> query = em.createNamedQuery("Libro.findByAutor", Libro.class);
         query.setParameter("idAutor", idAutor);
+        List<Libro> libros = query.getResultList();
+
+        em.close();
+
+        return libros;
+    }
+    
+    public List librosByNomAutor(String nomAutor) {
+        em = emf.createEntityManager();
+
+        TypedQuery<Libro> query = em.createNamedQuery("Libro.findNomAutor", Libro.class);
+        query.setParameter("nomAutor", nomAutor);
         List<Libro> libros = query.getResultList();
 
         em.close();

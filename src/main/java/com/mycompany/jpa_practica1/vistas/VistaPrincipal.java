@@ -6,6 +6,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
     
     private VistaAutores va;
     private VistaCategorias vc;
+    private VistaLibros vl;
 
     public VistaPrincipal() {
         initComponents();
@@ -55,6 +56,11 @@ public class VistaPrincipal extends javax.swing.JFrame {
         jb_libros.setFocusable(false);
         jb_libros.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jb_libros.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jb_libros.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jb_librosActionPerformed(evt);
+            }
+        });
         jToolBar1.add(jb_libros);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -86,6 +92,13 @@ public class VistaPrincipal extends javax.swing.JFrame {
         vc.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         vc.setVisible(true);
     }//GEN-LAST:event_jb_categoriasActionPerformed
+
+    private void jb_librosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_librosActionPerformed
+        vl = new VistaLibros();
+        vl.setLocationRelativeTo(null);
+        vl.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        vl.setVisible(true);
+    }//GEN-LAST:event_jb_librosActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

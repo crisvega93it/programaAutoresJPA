@@ -27,6 +27,7 @@ import javax.persistence.TemporalType;
 @NamedQueries({
     @NamedQuery(name = "Libro.findAll", query = "SELECT l FROM Libro l"),
     @NamedQuery(name = "Libro.findByAutor", query = "SELECT l FROM Libro l WHERE l.autor.idAutor = :idAutor"),
+    @NamedQuery(name = "Libro.findNomAutor", query = "SELECT l FROM Libro l WHERE l.autor.nomAutor = :nomAutor"),
     @NamedQuery(name = "Libro.findByIdLibros", query = "SELECT l FROM Libro l WHERE l.idLibros = :idLibros"),
     @NamedQuery(name = "Libro.findByTitulo", query = "SELECT l FROM Libro l WHERE l.titulo = :titulo"),
     @NamedQuery(name = "Libro.findByFechaPublicacion", query = "SELECT l FROM Libro l WHERE l.fechaPublicacion = :fechaPublicacion"),
