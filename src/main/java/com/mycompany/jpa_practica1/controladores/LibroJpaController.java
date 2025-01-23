@@ -1,6 +1,5 @@
 package com.mycompany.jpa_practica1.controladores;
 
-import com.mycompany.jpa_practica1.exceptions.NonexistentEntityException;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -120,31 +119,7 @@ public class LibroJpaController implements Serializable {
         }
         return respuesta;
     }
-
-    public List<Libro> findLibroEntities() {
-        return findLibroEntities(true, -1, -1);
-    }
-
-    public List<Libro> findLibroEntities(int maxResults, int firstResult) {
-        return findLibroEntities(false, maxResults, firstResult);
-    }
-
-    private List<Libro> findLibroEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Libro.class));
-            Query q = em.createQuery(cq);
-            if (!all) {
-                q.setMaxResults(maxResults);
-                q.setFirstResult(firstResult);
-            }
-            return q.getResultList();
-        } finally {
-            em.close();
-        }
-    }
-
+    
     public Libro findLibro(Integer id) {
         EntityManager em = getEntityManager();
         try {
@@ -154,17 +129,5 @@ public class LibroJpaController implements Serializable {
         }
     }
 
-    public int getLibroCount() {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Libro> rt = cq.from(Libro.class);
-            cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createQuery(cq);
-            return ((Long) q.getSingleResult()).intValue();
-        } finally {
-            em.close();
-        }
-    }
 
 }

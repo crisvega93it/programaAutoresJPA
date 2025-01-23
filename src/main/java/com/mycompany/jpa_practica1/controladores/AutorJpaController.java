@@ -1,7 +1,5 @@
 package com.mycompany.jpa_practica1.controladores;
 
-import com.mycompany.jpa_practica1.exceptions.IllegalOrphanException;
-import com.mycompany.jpa_practica1.exceptions.NonexistentEntityException;
 import com.mycompany.jpa_practica1.modelos.Autor;
 import java.io.Serializable;
 import javax.persistence.Query;
@@ -146,19 +144,6 @@ public class AutorJpaController implements Serializable {
         EntityManager em = getEntityManager();
         try {
             return em.find(Autor.class, id);
-        } finally {
-            em.close();
-        }
-    }
-
-    public int getAutorCount() {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Autor> rt = cq.from(Autor.class);
-            cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createQuery(cq);
-            return ((Long) q.getSingleResult()).intValue();
         } finally {
             em.close();
         }

@@ -336,7 +336,7 @@ public class VistaAutores extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton_refrescarActionPerformed
 
     private void jb_altaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_altaActionPerformed
-        DialogAltaAutor daa = new DialogAltaAutor(this, rootPaneCheckingEnabled);
+        DialogAltaAutor daa = new DialogAltaAutor(this, rootPaneCheckingEnabled, this);
         daa.setLocationRelativeTo(null);
         daa.setVisible(true);
     }//GEN-LAST:event_jb_altaActionPerformed
@@ -387,7 +387,7 @@ public class VistaAutores extends javax.swing.JFrame {
     private javax.swing.JTextField tf_buscarAutor;
     // End of variables declaration//GEN-END:variables
 
-    private void rellenarJTable() {
+    public void rellenarJTable() {
 
         dtm.setRowCount(0);
         List<Autor> autores = controladorBusquedas.allAutores();

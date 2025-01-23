@@ -2,13 +2,9 @@ package com.mycompany.jpa_practica1.vistas;
 
 import com.mycompany.jpa_practica1.controladores.AutorJpaController;
 import com.mycompany.jpa_practica1.controladores.ControladorBusquedas;
-import com.mycompany.jpa_practica1.exceptions.IllegalOrphanException;
-import com.mycompany.jpa_practica1.exceptions.NonexistentEntityException;
 import com.mycompany.jpa_practica1.modelos.Autor;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.swing.JOptionPane;

@@ -2,8 +2,6 @@ package com.mycompany.jpa_practica1.modelos;
 
 import java.io.Serializable;
 import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,11 +22,7 @@ public class Categoria implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "idCategoria")
     private Integer idCategoria;
-    @Basic(optional = false)
-    @Column(name = "nomCategoria")
     private String nomCategoria;
     @ManyToMany(mappedBy = "categoriaCollection")
     private Collection<Libro> libroCollection;
@@ -95,7 +89,7 @@ public class Categoria implements Serializable {
 
     @Override
     public String toString() {
-        return "com.mycompany.jpa_practica1.modelos.Categoria[ idCategoria=" + idCategoria + " ]";
+        return this.nomCategoria;
     }
     
 }

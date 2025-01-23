@@ -4,7 +4,6 @@
  */
 package com.mycompany.jpa_practica1.controladores;
 
-import com.mycompany.jpa_practica1.exceptions.NonexistentEntityException;
 import com.mycompany.jpa_practica1.modelos.Categoria;
 import java.io.Serializable;
 import javax.persistence.Query;
@@ -99,51 +98,4 @@ public class CategoriaJpaController implements Serializable {
         }
         return respuesta;
     }
-
-    public List<Categoria> findCategoriaEntities() {
-        return findCategoriaEntities(true, -1, -1);
-    }
-
-    public List<Categoria> findCategoriaEntities(int maxResults, int firstResult) {
-        return findCategoriaEntities(false, maxResults, firstResult);
-    }
-
-    private List<Categoria> findCategoriaEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Categoria.class));
-            Query q = em.createQuery(cq);
-            if (!all) {
-                q.setMaxResults(maxResults);
-                q.setFirstResult(firstResult);
-            }
-            return q.getResultList();
-        } finally {
-            em.close();
-        }
-    }
-
-    public Categoria findCategoria(Integer id) {
-        EntityManager em = getEntityManager();
-        try {
-            return em.find(Categoria.class, id);
-        } finally {
-            em.close();
-        }
-    }
-
-    public int getCategoriaCount() {
-        EntityManager em = getEntityManager();
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Categoria> rt = cq.from(Categoria.class);
-            cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createQuery(cq);
-            return ((Long) q.getSingleResult()).intValue();
-        } finally {
-            em.close();
-        }
-    }
-
 }

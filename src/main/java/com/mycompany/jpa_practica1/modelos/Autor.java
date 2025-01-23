@@ -2,9 +2,7 @@ package com.mycompany.jpa_practica1.modelos;
 
 import java.io.Serializable;
 import java.util.Collection;
-import javax.persistence.Basic;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -32,11 +30,7 @@ public class Autor implements Serializable, Comparable<Autor> {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "idAutor")
     private Integer idAutor;
-    @Basic(optional = false)
-    @Column(name = "nomAutor")
     private String nomAutor;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "autor")
     private Collection<Libro> listaLibros;
@@ -98,7 +92,7 @@ public class Autor implements Serializable, Comparable<Autor> {
 
     @Override
     public String toString() {
-        return "idAutor: " + idAutor + ", " + this.nomAutor;
+        return this.nomAutor;
     }
 
     @Override
